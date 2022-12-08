@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 
 def write_all_to_file(iterator_pointer, result_file):
@@ -6,7 +7,7 @@ def write_all_to_file(iterator_pointer, result_file):
         result_file.writerow(row)
 
 
-def concatenate_files(batches_count):
+def concatenate_files(batches_count, sort_key):
     print('#' * 50)
     for i in range(batches_count):
 
@@ -30,8 +31,14 @@ def concatenate_files(batches_count):
             prev_file_row = prev_reader.__next__()
 
             while True:
+                try:
+                    var_1 = float(row_i[sort_key])
+                    var_2 = float(prev_file_row[sort_key])
+                except:
+                    var_1 = row_i[sort_key]
+                    var_2 = prev_file_row[sort_key]
 
-                if row_i['high'] > prev_file_row['high']:
+                if var_1 > var_2:
                     result_writer.writerow(prev_file_row)
                     try:
                         prev_file_row = prev_reader.__next__()
